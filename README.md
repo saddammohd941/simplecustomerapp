@@ -100,9 +100,11 @@ cat /home/jenkins/.m2/settings.xml
         <role rolename="manager-script"/>
         <role rolename="manager-jmx"/>
         <role rolename="manager-status"/>
+        <role rolename="admin-gui"/>
         <user username="admin" password="admin123" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
         <user username="deployer" password="deployer123" roles="manager-gui,manager-script"/>
         <user username="tomcat" password="tomcat123" roles="manager-gui"/>
+        <user username="hostadmin" password="admin123" roles="admin-gui"/>
   ```
 - Update if needed:
   ```bash
