@@ -95,22 +95,35 @@ cat /home/jenkins/.m2/settings.xml
   cat /opt/tomcat/conf/tomcat-users.xml
   ```
   Ensure:
-  ```xml
-        <role rolename="manager-gui"/>
-        <role rolename="manager-script"/>
-        <role rolename="manager-jmx"/>
-        <role rolename="manager-status"/>
-        <role rolename="admin-gui"/>
-        <user username="admin" password="admin123" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
-        <user username="deployer" password="deployer123" roles="manager-gui,manager-script"/>
-        <user username="tomcat" password="tomcat123" roles="manager-gui"/>
-        <user username="hostadmin" password="admin123" roles="admin-gui"/>
-  ```
+```xml
+<tomcat-users ...>
+      <role rolename="manager-gui"/>
+      <role rolename="admin-gui"/>
+      <role rolename="host-manager-gui"/>
+      <role rolename="manager-script"/>
+      <role rolename="manager-jmx"/>
+      <role rolename="manager-status"/>
+      <user username="admin" password="admin123" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,host-manager-gui"/>
+      <user username="hostadmin" password="hostadmin123" roles="admin-gui,host-manager-gui"/>
+      <user username="deployer" password="deployer123" roles="manager-gui,manager-script"/>
+      <user username="tomcat" password="tomcat123" roles="manager-gui"/>
+</tomcat-users>
+```
 - Update if needed:
   ```bash
   sudo vi /opt/tomcat/conf/tomcat-users.xml
   systemctl restart tomcat
   ```
+**Standard Tomcat Roles**
+
+| Role Name             | Included? | Assigned To User(s)                          | What It Grants Access To                          |
+|-----------------------|-----------|----------------------------------------------|---------------------------------------------------|
+| manager-gui           | Yes       | admin, deployer, tomcat                      | Application Manager GUI (/manager/html)           |
+| manager-script        | Yes       | admin, deployer                              | Manager HTTP API & scripts (for CI/CD)            |
+| manager-jmx           | Yes       | admin                                        | JMX access via Manager                            |
+| manager-status        | Yes       | admin                                        | Status pages (/manager/status)                    |
+| admin-gui             | Yes       | admin, hostadmin                             | Admin interface (rarely used)                     |
+| host-manager-gui      | Yes       | **admin**, **hostadmin**                     | **Host Manager GUI** (/host-manager/html)         |
 
 ### 6. Set Up Jenkins
 - Log into Jenkins at `<JENKINS_SERVER>`.
